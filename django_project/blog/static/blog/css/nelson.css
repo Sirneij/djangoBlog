@@ -129,6 +129,10 @@
      position: relative;
      top: .5rem;
  }
+.go-top svg{
+     width: 25px;
+     height: 25px;
+ }
 
  .wmd-wrapper {
      display: block;
@@ -147,6 +151,15 @@
      top: -2.5rem;
  }
 
+ .go-bottom svg{
+     width: 25px;
+     height: 25px;
+ }
+
+ .go-bottom .views, .go-bottom .comments, .go-bottom .read{
+    display: flex;
+ }
+
  .home-single .go-top {
      font-style: strong;
      position: relative;
@@ -154,8 +167,14 @@
  }
 
  .home-single .go-bottom {
+    display: flex;
      position: relative;
      top: -2.5rem;
+ }
+
+ .home-single .go-bottom svg{
+     width: 25px;
+     height: 25px;
  }
 
  .header-content .wrapper {
