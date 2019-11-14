@@ -1,0 +1,54 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+{% for post in posts %}
+<section id="content-wrap" class="home-single">
+    <div class="row">
+        <div class="col-twelve">
+            <div class="card">
+                <article class="format-standard">
+                    <div class="primary-content">
+                        <h1 class="page-title"><a href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h1>
+                        <div class="author-profile">
+                            <img src="{{ post.author.profile.image.url }}" alt="">
+                            <div class="about">
+                                <p class="go-top">Posted by <a href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a> on {{ post.date_posted|date:"F d, Y " }} at {{ post.date_posted|time:"P" }}</p>
+                                <p class="go-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57.983 57.983"><path d="M37.991 0c-10.77 0-19.5 7.827-19.5 17.483 0 3.558 1.189 6.866 3.225 9.628-.268 3.19-1.037 7.684-3.225 9.872 0 0 6.686-.938 11.214-3.673a21.312 21.312 0 008.286 1.656c10.77 0 19.5-7.827 19.5-17.483S48.761 0 37.991 0z" fill="#0391fd"/><path d="M25.934 55.598l-4.177-2.67c-1.037-.566-2.244-2.524-2.244-3.705v-3.24s2.882-1.905 3.768-5.762a2.66 2.66 0 001.226-2.231v-2.425c-3.207 1.021-6.014 1.418-6.014 1.418 2.188-2.188 2.957-6.682 3.225-9.872a16.596 16.596 0 01-2.549-5.098c-1.395-.625-3.231-1.029-5.655-1.029-10.803 0-10 8-10 8v3.126c-.54.488-.993 1.555-.993 2.335v3.546c0 .934.491 1.756 1.226 2.231.886 3.857 3.768 5.762 3.768 5.762v3.24c0 1.182-1.207 3.14-2.244 3.705l-4.177 2.67c-1.09.697-.596 2.385.697 2.385H25.24c1.29-.001 1.783-1.689.694-2.386z" fill="#a1c8ec"/><circle cx="27.491" cy="17.983" r="3" fill="#fff"/><circle cx="38.491" cy="17.983" r="3" fill="#fff"/><circle cx="49.491" cy="17.983" r="3" fill="#fff"/></svg> {{ post.comments }} comments <span class="ml-4"><i class="far fa-eye"></i>{{ post.views }} views</span><span class="ml-4"><i class="far fa-clock"></i>{{ post.readTime }} minutes read.</span>
+                                </p>
+                            </div>
+                        </div>
+                        <p class="tags">
+                            <span>Tagged in :</span>
+                            <a href="#">orci</a><a href="#">lectus</a><a href="#">varius</a><a href="#">turpis</a>
+                        </p>{{ post.get_markdown|truncatechars_html:120 }} <a class="button" href="{% url 'post-detail' post.id %}">Read Article...</a><p>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div> <!-- end row -->
+</section>
+{% endfor %}
+{% if is_paginated %}
+    <section id="content-wrap" class="home-single">
+        <div class="row">
+            <nav class="pagination">
+                {% if page_obj.has_previous %}
+                    <span class="page-numbers"><a href="?page=1">First</a></span>
+                    <span class="page-numbers prev"><a href="?page={{ page_obj.previous_page_number }}">Prev</a></span>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a class="page-numbers current" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} 
+                        <a class="page-numbers" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a class="page-numbers next" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a class="page-numbers last" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </nav>
+        </div>
+    </section>
+{% endif %}
+{% endblock content %}

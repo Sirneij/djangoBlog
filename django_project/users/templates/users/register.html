@@ -1,0 +1,73 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<!-- title -->
+<h1>
+    <span>J</span>ohn
+    <span>R</span>egistration
+    <span>F</span>orm
+</h1>
+<!-- //title -->
+<!-- content -->
+<div class="sub-main-w3">
+    <form class="login" action="#" method="post">
+        {% csrf_token %}
+        <p class="legend">Register Here<span class="fas fa-hand-point-down"></span></p>
+        <div class="error">
+            {{ form.non_field_errors }}
+        </div>
+        <div class="error">
+            {{ form.password.errors }}
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.username.errors }}
+            </div>
+            {{ form.username }}
+            <span class="fas fa-user"></span>
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.first_name.errors }}
+            </div>
+            {{ form.first_name }}
+            <span class="fas fa-user"></span>
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.last_name.errors }}
+            </div>
+            {{ form.last_name }}
+            <span class="fas fa-user"></span>
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.email.errors }}
+            </div>
+            {{ form.email }}
+            <span class="fas fa-envelope"></span>
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.password1.errors }}
+            </div>
+            {{ form.password1 }}
+            <span class="fas fa-lock"></span>
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.password2.errors }}
+            </div>
+            {{ form.password2 }}
+            <span class="fas fa-lock"></span>
+        </div>
+        <button type="submit" class="submit">
+            <span class="fas fa-sign-in-alt"></span>
+        </button>
+    </form>
+    <div class="forgot">
+        <p>Already have an account? <a href="{% url 'login' %}">Login here.</a></p>
+    </div>
+</div>
+<!-- //content -->
+</div>
+{% endblock content %}

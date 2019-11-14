@@ -1,0 +1,46 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<!-- title -->
+<h1>
+    <span>J</span>ohn
+    <span>L</span>ogin
+    <span>F</span>orm
+</h1>
+<!-- //title -->
+<!-- content -->
+<div class="sub-main-w3">
+    <form class="login" action="#" method="post">
+        {% csrf_token %}
+        <p class="legend">Login Here<span class="fas fa-hand-point-down"></span></p>
+        <div class="error">
+            {{ form.non_field_errors }}
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.username.errors }}
+            </div>
+            {{ form.username }}
+            <span class="fas fa-envelope"></span>
+        </div>
+        <div class="input">
+            <div class="error">
+                {{ form.password.errors }}
+            </div>
+            {{ form.password }}
+            <span class="fas fa-lock"></span>
+        </div>
+        <button type="submit" class="submit">
+            <span class="fas fa-sign-in-alt"></span>
+        </button>
+    </form>
+    <div class="forgot">
+        <p>Forgot Password? <a href="{% url 'password_reset' %}">Recover here.<a></p>
+    </div>
+    <hr>
+    <div class="forgot">
+        <p>Need an account? <a href="{% url 'register' %}">Get one here.<a></p>
+    </div>
+</div>
+<!-- //content -->
+</div>
+{% endblock content %}

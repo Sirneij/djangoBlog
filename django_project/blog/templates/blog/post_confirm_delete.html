@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+	<section id="content-wrap" class="site-page home-single">
+    <div class="row">
+        <div class="col-twelve">
+            <form name="cForm" id="cForm" method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1 class="page-title center">Delete Post</h1>
+                <h2>Are you sure you want to delete the post "{{ object.title }}"</h2>
+                <fieldset>
+                    <button type="submit" class="submit button-danger full-width-on-mobile">Yes, Delete</button>
+                    <a class="button full-width-on-mobile" href="{% url 'post-detail' object.id %}">Cancel</a>
+                </fieldset>
+            </form> <!-- end form -->
+        </div> <!-- end col-twelve -->
+    </div> <!-- end row -->
+</section> <!-- end content -->
+{% endblock content %}
