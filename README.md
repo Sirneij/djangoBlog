@@ -9,17 +9,22 @@ A simple but beautiful and full-featured blog written using Django framework wit
 
 2. Initialize and activate a virtualenv:Linux and MacOS
   ```
-  $ pip install virtualenv
-  $ python3 -m venv venv
-  $ source venv/bin/activate
+  $ pip install virtualenv  #If you don't have it installed
+  $ source myblogenv/bin/activate
 
   ```
   On Windows:
  ```
- >pip install virtualenv
- >py -3 -m venv venv
- >venv\Scripts\activate
+ >pip install virtualenv  #If you don't have it installed
+ >myblogenv\Scripts\activate
  ```
+                      OR
+  If you want to use ```pipenv```,
+  Initialize and activate a it using: All OS
+  ```
+  pip install pipenv #If not already installed
+  pipenv shell
+  ```
 3. Install the dependencies:
   ```
   $ pip install -r requirements.txt
