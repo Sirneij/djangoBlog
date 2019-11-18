@@ -18,8 +18,8 @@ class Profile(models.Model):
         markdown_text = markdown(about)
         return mark_safe(markdown_text)
 
-    def save(self):
-        super().save()
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
 
         img = Image.open(self.image.path)
 

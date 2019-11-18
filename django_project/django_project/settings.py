@@ -32,7 +32,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
-    'users.apps.UsersConfig',
+    'comments',
+    'taggit',
+    'users',
     'markdown_deux',
     'pagedown.apps.PagedownConfig',
     'django.contrib.admin',

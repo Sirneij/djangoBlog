@@ -9,7 +9,7 @@
                 <h2>Are you sure you want to delete the post "{{ object.title }}"</h2>
                 <fieldset>
                     <button type="submit" class="submit button-danger full-width-on-mobile">Yes, Delete</button>
-                    <a class="button full-width-on-mobile" href="{% url 'post-detail' object.id %}">Cancel</a>
+                    <a class="button full-width-on-mobile" href="{{ post.get_absolute_url }}">Cancel</a>
                 </fieldset>
             </form> <!-- end form -->
         </div> <!-- end col-twelve -->
