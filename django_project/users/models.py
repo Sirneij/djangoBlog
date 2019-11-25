@@ -1,22 +1,21 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.contrib.auth.models import User
+from ckeditor_uploader.fields import RichTextUploadingField
 from PIL import Image
-from markdown_deux import markdown
-
+from ckeditor.fields import RichTextField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.png', upload_to='profile_pics')
-    about = models.TextField()
+    about = RichTextUploadingField()
 
     def __str__(self):
         return f'{self.user.username} Profile'
 
     def get_markdown(self):
         about = self.about
-        markdown_text = markdown(about)
-        return mark_safe(markdown_text)
+        return mark_safe(about)
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)

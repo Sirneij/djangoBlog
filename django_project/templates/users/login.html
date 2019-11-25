@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}DevC - Login{% endblock %}
+{% block content %}
+<section id="content-wrap" class="site-page">
+    <div class="row">
+        <div class="col-eight">
+            <div class="card">
+                <section>
+                    <div class="content-media">
+                    </div>
+                    <div class="primary-content">
+                        <h1 class="entry-title add-bottom text-center">Login Here</h1>
+                        <div class="alert-box ss-info hideit">
+                            <p>Welcome to Devc.com, the beautiful world and community where awesome contents and connections are at your fingertips... Please provide your correct login details to gain full access to this amazing world of possibilities.</p>
+                            <i class="fa fa-times close"></i>
+                        </div>
+                        <form name="cForm" id="cForm" method="post" action="">
+                            <fieldset>
+                                {% csrf_token %}
+                                {% if form.non_field_errors %}
+                                <div class="alert-box ss-error hideit">
+                                    {{ form.non_field_errors }}
+                                    <i class="fa fa-times close"></i>
+                                </div>
+                                {% endif %}
+                                {% for field in form %}
+                                <div class="form-field">
+                                    {{ field }}
+                                </div>
+                                {% if field.errors %}
+                                <div class="alert-box ss-error hideit">
+                                    {{ field.errors }}
+                                    <i class="fa fa-times close"></i>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                <button type="submit" class="submit button-primary full-width-on-mobile">Login</button>
+                            </fieldset>
+                        </form> <!-- end form -->
+                        <div class="forgot">
+                            <p>Forgot Password? <a href="{% url 'users:password_reset' %}">Recover here.<a></p>
+                            <p>Need an account? <a href="{% url 'users:register' %}">Get one here.<a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="col-four">
+            <div class="card">
+                <section>
+                    <div class="content-media">
+                    </div>
+                    <div class="primary-content">
+                        <h1 class="entry-title add-bottom">Login using</h1>
+                        <a href="{% url 'social:begin' 'github' %}">
+                            <button type="button" class="submit button-primary full-width-on-mobile">Github</button>
+                        </a>
+                        <a href="{% url 'social:begin' 'google-oauth2' %}">
+                            <button type="button" class="submit button-danger full-width-on-mobile">Google+</button>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

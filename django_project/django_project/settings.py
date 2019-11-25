@@ -29,21 +29,101 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+SITE_ID = 1
+
 
 INSTALLED_APPS = [
-    'blog.apps.BlogConfig',
-    'comments',
-    'taggit',
-    'users',
-    'markdown_deux',
-    'pagedown.apps.PagedownConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'blog.apps.BlogConfig',
+    'taggit',
+    'users',
+    'ckeditor',
+    'ckeditor_uploader',
+    'django_mathjax',
+    'social_django',
+    'rest_framework',
 ]
+
+AUTHENTICATION_BACKENDS =[
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'users.authentication.EmailAuthBackend',
+]
+MATHJAX_ENABLED=True
+def upload_location(instance, filename):
+    return "%s/%s" %(instance.id, filename)
+
+CKEDITOR_UPLOAD_PATH = upload_location
+CKEDITOR_CONFIGS = {
+#     # django-ckeditor defaults
+     'default': {
+          'skin': 'moono',
+         # Editor Width Adaptation
+         'width':'80%',
+         'height':'250px',
+         # tab key conversion space number
+         'tabSpaces': 4,
+         # Toolbar Style
+         'toolbar': 'Custom',
+         # Toolbar buttons
+         'toolbar_Custom': [
+             # Emotional Code Block
+            {'name': 'document', 'items': ['Source', 'CodeSnippet', 'EqnEditor', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'forms','items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField']},
+            '/',
+            {'name': 'math', 'items': ['Mathjax', ]},
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft',
+             'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl','Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert','items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            { 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] },
+            # '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about', 'items': ['About']},
+            {'name': 'yourcustomtools', 'items': ['Preview','Maximize']},
+        ],
+        # Add Code Block Plug-ins
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+        # 'toolbarCanCollapse': True,
+        'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'extraPlugins': ','.join([
+            'codesnippet', 
+            'mathjax',
+            'uploadimage', # the upload image feature
+            # your extra plugins here
+            'div',
+            'mathjax',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            # 'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath'
+            ]),
+    }
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,6 +133,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'django_project.urls'
@@ -60,7 +141,7 @@ ROOT_URLCONF = 'django_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +149,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -124,12 +207,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-LOGIN_REDIRECT_URL = 'blog-home'
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'blog-home'
+LOGIN_REDIRECT_URL = 'blog:post_list'
+LOGIN_URL = 'users:login'
+LOGOUT_REDIRECT_URL = 'blog:post_list'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -137,3 +223,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '994337388510-9el6qeplnfudet5hiithbmcde7kfranl.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'jYpuZTE3IMjXICd9AJXcDU1F'
+
+SOCIAL_AUTH_GITHUB_KEY = '3019f2aa91db79217b6c'
+SOCIAL_AUTH_GITHUB_SECRET = '5a388b8e24deefadd3232f8f4c58aac6c796ca7f'

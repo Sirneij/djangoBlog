@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}DevC - {{ title }}{% endblock %}
+{% block content %}
+<section id="content-wrap" class="site-page home-single">
+    <div class="row">
+        <div class="col-twelve">
+            <div class="card">
+                <article class="format-standard">
+                    <div class="primary-content">
+                        <h1 class="page-title">{{ user.username }}'s Current Profile</h1>
+                        <div class="author-profile">
+                            <img src="{{ user.profile.image.url }}" alt="">
+                            <div class="about">
+                                <p class="go-top">Full name: {{ user.last_name }} {{ user.first_name }} | Email: {{ user.email }}</p>
+                                <p class="go-bottom">{{ user.profile.about|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <form name="cForm" id="cForm" method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1 class="page-title center">Update Profile</h1>
+                <fieldset>
+                    {% for field in u_form %}
+                    <div class="form-field">
+                        {{ u_form.media }}
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    {% for field in p_form %}
+                    <div class="form-field">
+                        {{ p_form.media }}
+                        {{ field.label }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="submit button-primary full-width-on-mobile">Submit</button>
+                </fieldset>
+            </form> <!-- end form -->
+        </div> <!-- end col-twelve -->
+    </div> <!-- end row -->
+</section> <!-- end content -->
+{% endblock content %}

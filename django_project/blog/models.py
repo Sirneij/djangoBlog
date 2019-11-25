@@ -1,15 +1,13 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils import timezone
 from django.urls import reverse
 from django.db.models.signals import pre_save
-from markdown_deux import markdown
-from django.utils.safestring import mark_safe
 from taggit.managers import TaggableManager
-from comments.models import Comment
 from .utils import get_read_time
-
+from django.utils.safestring import mark_safe
 class PublishedManager(models.Manager): 
     def get_queryset(self): 
         return super(PublishedManager, self).get_queryset().filter(status='published')
@@ -27,13 +25,13 @@ class Post(models.Model):
     slug    = models.SlugField(max_length=250, unique_for_date='publish') 
     author  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
     image   = models.ImageField(upload_to=upload_location, null=True, blank=True)
-    body    = models.TextField() 
+    body    = RichTextUploadingField()
     publish = models.DateTimeField(default=timezone.now)
-    read_time =  models.IntegerField(default=0) # models.TimeField(null=True, blank=True) #assume minutes 
+    read_time =  models.IntegerField(default=0) # models.TimeField(null=True, blank=True) #as sume minutes 
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True) 
     status  = models.CharField(max_length=10,  choices=STATUS_CHOICES, default='draft') 
-    
+    ovation = models.ManyToManyField(User, blank=True, related_name="ovation")
     objects = models.Manager() # The default manager. 
     published = PublishedManager() # Our custom manager.
     tags = TaggableManager()
@@ -44,13 +42,16 @@ class Post(models.Model):
     def __str__(self): 
         return self.title
 
+
     def get_absolute_url(self):
         return reverse('blog:post_detail',args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
 
     def get_markdown(self):
         body = self.body
-        markdown_text = markdown(body)
-        return mark_safe(markdown_text)
+        return mark_safe(body)
+
+    def total_ovations(self):
+        return self.ovation.count()
 
     @property
     def comments(self):
@@ -72,22 +73,21 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 
 pre_save.connect(pre_save_post_receiver, sender=Post)
 
-# class Comment(models.Model): 
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-#     name = models.CharField(max_length=80) 
-#     email = models.EmailField() 
-#     body = models.TextField() 
-#     created = models.DateTimeField(auto_now_add=True) 
-#     updated = models.DateTimeField(auto_now=True) 
-#     active = models.BooleanField(default=True) 
+class Comment(models.Model): 
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    reply = models.ForeignKey('Comment', null=True, on_delete=models.CASCADE, related_name='replies')
+    body = RichTextUploadingField() 
+    created = models.DateTimeField(auto_now_add=True) 
+    updated = models.DateTimeField(auto_now=True) 
+    active = models.BooleanField(default=True) 
  
-#     class Meta: 
-#         ordering = ('created',) 
+    class Meta: 
+        ordering = ('created',) 
  
-#     def __str__(self): 
-#         return 'Comment by {} on {}'.format(self.name, self.post)
+    def __str__(self): 
+        return 'Comment by {} on {}'.format(self.author.username, self.post.title)
 
-#     def get_markdown(self):
-#         body = self.body
-#         markdown_text = markdown(body)
-#         return mark_safe(markdown_text)
+    def get_markdown(self):
+        body = self.body
+        return mark_safe(body)

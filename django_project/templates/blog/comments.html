@@ -1,0 +1,89 @@
+<div id="comments" class="row">
+            <div class="col-full">
+                <h3>{{ post.comments.count }} comment{{ post.comments.count|pluralize }} - ({{ comments.count }} main comment{{ comments.count|pluralize }})</h3>
+                <!-- respond -->
+                <div class="respond">
+                    <h3>Leave a Comment</h3>
+                    <form name="contactForm comment-form" id="contactForm" method="post" action=".">
+                        <fieldset>
+                            {% csrf_token %}
+                            <div class="form-field">
+                                {{ comment_form.as_p }}
+                            </div>
+                            {% if request.user.is_authenticated %}
+                            <button type="submit" class="submit button-primary">Comment</button>
+                            {% else %}
+                            <button type="submit" class="submit button-primary" disabled="">Comment</button>
+                            {% endif %}
+                        </fieldset>
+                    </form> <!-- Form End -->
+                </div> <!-- Respond End -->
+                <!-- commentlist -->
+                <ol class="commentlist">
+                    {% for comment in comments %}
+                    <li class="thread-alt depth-1">
+                        <div class="avatar">
+                            <img width="50" height="50" class="avatar" src="{{ comment.author.profile.image.url }}" alt="">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-info">
+                                <cite>{{ comment.author.username|capfirst }}</cite>
+                                <div class="comment-meta">
+                                    <time class="comment-time" datetime="2014-07-12T24:05">{{ comment.created|timesince }} ago</time>
+                                    <span class="sep">/</span><button class="reply button">Reply</button>
+                                </div>
+                            </div>
+                            <div class="comment-text">
+                                <p>{{ comment.get_markdown|safe }}</p>
+                            </div>
+                        </div>
+                        <div class="children respond respond-children" style="display: none;">
+                                    <h3>Reply</h3>
+                                    <form name="contactForm reply-form" id="contactForm" method="post" action=".">
+                                        <fieldset>
+                                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                            {% csrf_token %}
+                                            <div class="form-field">
+                                                {{ comment_form.as_p }}
+                                            </div>
+                                            {% if request.user.is_authenticated %}
+                                            <button type="submit" class="submit button-primary">Reply</button>
+                                            {% else %}
+                                            <button type="submit" class="submit button-primary" disabled="">Reply</button>
+                                            {% endif %}
+                                        </fieldset>
+                                    </form> <!-- Form End -->
+                                </div> <!-- Respond End -->
+                        {% for reply in comment.replies.all %}
+                        <ul class="children">
+                            <li class="depth-2">
+                                <div class="avatar">
+                                    <img width="50" height="50" class="avatar" src="{{ reply.author.profile.image.url }}" alt="">
+                                </div>
+                                <div class="comment-content">
+                                    <div class="comment-info">
+                                        <cite>{{ reply.author.username|capfirst }}</cite>
+                                        <div class="comment-meta">
+                                            <time class="comment-time" datetime="2014-07-12T25:05">{{ reply.created|timesince }} ago</time>
+                                            <!-- <span class="sep">/</span><a class="reply" href="#">Reply</a> -->
+                                        </div>
+                                    </div>
+                                    <div class="comment-text">
+                                        <p>{{ reply.get_markdown }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        {% endfor %}
+                    </li>
+                    {% endfor %}
+                </ol> <!-- Commentlist End -->
+            </div> <!-- end col-full -->
+        </div> <!-- end row comments -->
+{% block script %}
+    <script type="text/javascript">
+        $('.reply').click(function(){
+            $(this).parent().next('.respond-children').fadeToggle()
+        });
+    </script>
+{% endblock script %}
