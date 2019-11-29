@@ -8,6 +8,10 @@ from django.db.models.signals import pre_save
 from taggit.managers import TaggableManager
 from .utils import get_read_time
 from django.utils.safestring import mark_safe
+from hitcount.models import HitCountMixin, HitCount
+from django.contrib.contenttypes.fields import GenericRelation
+from django.utils.encoding import python_2_unicode_compatible
+
 class PublishedManager(models.Manager): 
     def get_queryset(self): 
         return super(PublishedManager, self).get_queryset().filter(status='published')
@@ -34,6 +38,7 @@ class Post(models.Model):
     ovation = models.ManyToManyField(User, blank=True, related_name="ovation")
     objects = models.Manager() # The default manager. 
     published = PublishedManager() # Our custom manager.
+    hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
     tags = TaggableManager()
 
     class Meta: 

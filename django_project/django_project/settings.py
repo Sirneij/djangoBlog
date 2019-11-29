@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_mathjax',
     'social_django',
     'rest_framework',
+    'hitcount',
 ]
 
 AUTHENTICATION_BACKENDS =[

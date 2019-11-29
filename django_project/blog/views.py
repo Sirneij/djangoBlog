@@ -5,8 +5,9 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonRespons
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from hitcount.views import HitCountDetailView
 from taggit.models import Tag
-
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from .models import Post, Comment
@@ -78,6 +79,7 @@ def post_detail(request, year, month, day, post):
     'comments': comments,
     'comment_form': comment_form,
     'is_ovated': is_ovated,
+    'popular_posts': Post.objects.order_by('-hit_count_generic__hits')[:1],
     #'total_ovations': total_ovations,
     }
 
@@ -152,7 +154,7 @@ class SearchResultsView(generic.ListView):
                 ).distinct()
         return object_list
 
-
+@login_required
 def ovation(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     is_ovated = False

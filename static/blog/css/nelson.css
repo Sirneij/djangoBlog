@@ -1,3 +1,7 @@
+/*
+    header and navigations
+*/
+
  header {
      width: 100%;
      background: #FDF9F3;
@@ -36,8 +40,21 @@
  }
 
  header .logo a {
+     display: block;
+	margin: 0;
+	padding: 0;
+	outline: 0;
+	border: none;
      width: 140px;
      height: 110px;
+     font: 0/0 a;
+	text-shadow: none;
+	color: transparent;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-webkit-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
  }
 
  .fixed {
@@ -45,7 +62,36 @@
      top: 0;
      width: 100%;
  }
+#main-nav-wrap {
+	display: table;
+	float: right;
+	padding-right: 75px;
+	font-family: "montserrat-regular", sans-serif;
+	font-size: 15px;
+	height: 85px;
+}
+.main-navigation {
+	display: table-cell;
+	vertical-align: middle;
+	list-style: none;
+}
 
+.main-navigation li {
+	position: relative;
+	display: inline-block;
+	float: left;
+	margin-right: 22px;
+	padding: 0;
+}
+
+.main-navigation li:last-child {
+	margin-right: 0;
+}
+.main-navigation li a {
+	display: block;
+	padding-bottom: 9px;
+	border: none;
+}
  .main-navigation li a {
      color: #025893;
  }
@@ -53,13 +99,136 @@
  .main-navigation li a:hover {
      color: #0ff;
  }
-
+.main-navigation li > a {
+	border-bottom: 2px solid transparent;
+}
  .main-navigation li.current>a {
      border-top: 2px solid #0ff;
      color: #0ff;
      font-family: "montserrat-bold", sans-serif;
  }
+.main-navigation ul {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	margin: 0;
+	background: #f4f4f4;
+	border-radius: 0 0 3px 3px;
+	font-size: 11px;
+	z-index: 500;
+	display: none;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
 
+.main-navigation ul ul {
+	position: absolute;
+	top: 0;
+	left: 100%;
+	left: calc(100% + 1px);
+	border-radius: 0 3px 3px 3px;
+}
+
+.main-navigation ul li {
+	display: block;
+	text-align: left;
+	padding: 0;
+	margin: 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	min-height: 48px;
+	width: 100%;
+}
+
+.main-navigation ul li:last-child {
+	border: none;
+}
+
+.main-navigation ul li a {
+	white-space: nowrap;
+	padding: 16.5px 25px;
+	font-family: "muli-regular", sans-serif;
+	font-size: 14px;
+	line-height: 15px;
+	display: block;
+	color: #8E8E8E;
+}
+.main-navigation ul li a:hover {
+	background: transparent;
+	color: #000000;
+}
+
+.main-navigation ul li:hover > ul,
+.main-navigation ul li.sfHover > ul {
+	display: block;
+}
+
+ .header-content .wrapper {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+
+ .header-content .wrapper .search_box {
+     width: 70%;
+     position: relative;
+     top: 18px;
+     left: 42px;
+ }
+
+ .header-content .wrapper .search_box input[type="text"] {
+     width: 100%;
+     height: 35px !important;
+     padding: 10px;
+     padding-right: 60px;
+     box-sizing: border-box;
+     background: rgba(0, 0, 0, 0.3);
+     border: 2px solid #fff;
+     border-radius: 10px;
+     font-size: 1.5rem;
+     color: #025893;
+     outline: none;
+ }
+
+ .header-content .wrapper .search_box button{
+    width: 15px;
+    height: 25px;
+    position: absolute;
+    background: transparent;
+ }
+
+ .header-content .wrapper .search_box button svg#search {
+    width: 25px;
+    height: 25px;
+ }
+
+ .header-content .wrapper .search_box button, .header-content .wrapper .search_box button svg#search{
+     position: absolute;
+     top: 35%;
+     transform: translateY(-50%);
+     right: 10px;
+     color: #025893;
+     font-size: 2.0rem;
+ }
+
+ @media screen and (max-width: 425px) {
+     .header-content .wrapper .search_box {
+         width: 95%;
+     }
+ }
+
+ ::-webkit-input-placeholder {
+     /* Chrome/Opera/Safari */
+     color: #025893;
+ }
+
+ ::-moz-placeholder {
+     /* Firefox 19+ */
+     color: #025893;
+ }
+
+ :-ms-input-placeholder {
+     /* IE 10+ */
+     color: #025893;
+ }
  .main-navigation li a svg {
      width: 33px;
      height: 33px;
@@ -70,6 +239,51 @@
      color: #898989;
      border: none;
  }
+
+.main-navigation li ul {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    transition: all 0.5s ease;
+    margin-top: 0;
+    left: 0;
+    background-color: #025893;
+    color: #0ff;
+    display: none;
+}
+
+.main-navigation .display {
+     width: 118px;
+     padding: 0px 0px 3px 0px;
+     height: 30px;
+     text-align: center;
+     text-transform: uppercase;
+     font-weight: bold;
+     border-radius: 6px;
+     border: 2px solid #025893;
+     color: #000000;
+     background: #0ff;
+     overflow: hidden;
+ }
+
+ .main-navigation .display a:hover {
+     background: #025893;
+     color: #0ff;
+     transition: all 0.8s;
+ }
+
+.main-navigation li:hover > ul, .main-navigation li:focus-within > ul, .main-navigation li ul:hover{
+    visibility: visible;
+    opacity: 1;
+    display: block;
+    color: #0ff;
+}
+
+.main-navigation li ul li{
+    clear: both;
+    width: 100%;
+    color: #0ff;
+}
 
 
 
@@ -219,25 +433,7 @@
      z-index: 590;
  }
 
- .main-navigation .display {
-     width: 118px;
-     padding: 0px 0px 3px 0px;
-     height: 30px;
-     text-align: center;
-     text-transform: uppercase;
-     font-weight: bold;
-     border-radius: 6px;
-     border: 2px solid #025893;
-     color: #000000;
-     background: #0ff;
-     overflow: hidden;
- }
-
- .main-navigation .display a:hover {
-     background: #025893;
-     color: #0ff;
-     transition: all 0.8s;
- }
+ 
 
  @media only screen and (max-width:768px) {
      .card {
@@ -480,75 +676,6 @@ input[type="button"] {
      }
  }
 
-
- .header-content .wrapper {
-     display: flex;
-     justify-content: center;
-     align-items: center;
- }
-
- .header-content .wrapper .search_box {
-     width: 70%;
-     position: relative;
-     top: 18px;
-     left: 42px;
- }
-
- .header-content .wrapper .search_box input[type="text"] {
-     width: 100%;
-     height: 35px !important;
-     padding: 10px;
-     padding-right: 60px;
-     box-sizing: border-box;
-     background: rgba(0, 0, 0, 0.3);
-     border: 2px solid #fff;
-     border-radius: 10px;
-     font-size: 1.5rem;
-     color: #025893;
-     outline: none;
- }
-
- .header-content .wrapper .search_box button{
-    width: 15px;
-    height: 25px;
-    position: absolute;
-    background: transparent;
- }
-
- .header-content .wrapper .search_box button svg#search {
-    width: 25px;
-    height: 25px;
- }
-
- .header-content .wrapper .search_box button, .header-content .wrapper .search_box button svg#search{
-     position: absolute;
-     top: 35%;
-     transform: translateY(-50%);
-     right: 10px;
-     color: #025893;
-     font-size: 2.0rem;
- }
-
- @media screen and (max-width: 425px) {
-     .header-content .wrapper .search_box {
-         width: 95%;
-     }
- }
-
- ::-webkit-input-placeholder {
-     /* Chrome/Opera/Safari */
-     color: #025893;
- }
-
- ::-moz-placeholder {
-     /* Firefox 19+ */
-     color: #025893;
- }
-
- :-ms-input-placeholder {
-     /* IE 10+ */
-     color: #025893;
- }
 
 #content-wrap .primary-content .page-title{
     font-size: 2.6rem;
@@ -925,30 +1052,7 @@ pre > code.diff-highlight .token.inserted:not(.prefix) {
     padding-top: 1.8rem;
 }*/
 
-.main-navigation li ul {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    transition: all 0.5s ease;
-    margin-top: 0;
-    left: 0;
-    background-color: #025893;
-    color: #0ff;
-    display: none;
-}
 
-.main-navigation li:hover > ul, .main-navigation li:focus-within > ul, .main-navigation li ul:hover{
-    visibility: visible;
-    opacity: 1;
-    display: block;
-    color: #0ff;
-}
-
-.main-navigation li ul li{
-    clear: both;
-    width: 100%;
-    color: #0ff;
-}
 .shares{
     background: #FDF9F3;
     display: flex;
@@ -958,12 +1062,12 @@ pre > code.diff-highlight .token.inserted:not(.prefix) {
     height: 6rem;
     border-radius: 10px;
 }
-.shares .post-form button{
+.shares button{
     size: 40px 40px;
     background: transparent;
     padding: 0px;
 }
-.shares .post-form button svg{
+.shares button svg{
     margin: 0.6rem 0 0 0 !important;
     width: 5rem;
     height: 5rem;
@@ -973,7 +1077,7 @@ pre > code.diff-highlight .token.inserted:not(.prefix) {
     top: 0;
 }
 
-.shares  .mr-4{
+.shares .mr-4{
     margin-left: -2.5rem !important;
     position: absolute;
     top: 30% !important;
